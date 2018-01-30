@@ -52,7 +52,25 @@ cosip::cosip(std::string iniFilePath)
 		m_log->CsrPrintLog("记载配置文件失败%s\n");
 		exit(-1);
 	}
+
+	//初始化服务
+	if (!InitSIPService())
+	{
+		printf("初始化服务失败\n");
+		exit(-1);
+	}
+
 }
+
+cosip::~cosip()
+{
+	ReleaseService();
+}
+void cosip::DecodeH264(int nType /* = 0*/)
+{
+
+}
+
 
 //加载配置文件
 bool cosip::LoadIniFilePath(std::string iniFilePath)
@@ -368,11 +386,11 @@ bool cosip::QueryCatalogInfo()
 
 			osip_message_t *msg = NULL;
 			_snprintf(dest_call, 256, "sip:%s@%s:%d", m_VideoInfo.SParams.chPlatfromSipID, m_VideoInfo.SParams.chPlatfromIPAddr, m_VideoInfo.SParams.nPlatformSipPort);
-			_snprintf(source_call, 256, "sip:%s:%s", m_VideoInfo.SParams.chLocalSipID, m_VideoInfo.SParams.chLocalIPAddr);
+			_snprintf(source_call, 256, "sip:%s@%s", m_VideoInfo.SParams.chLocalSipID, m_VideoInfo.SParams.chLocalIPAddr);
 		
 			//发送请求
 			ret = eXosip_message_build_request(pExp, &msg, "MESSAGE", dest_call, source_call, NULL);
-			if (ret == 0 && msg == NULL)
+			if (ret == 0 && msg != NULL)
 			{
 				osip_message_set_body(msg, buf, strlen(buf));
 				osip_message_set_content_type(msg, "Application/MAXSCDP+xml");
@@ -681,7 +699,7 @@ unsigned __stdcall cosip::jrtp_rtp_recv_thread(void* pCameraInfo)
 							h264Len += pack->GetPayloadLength();
 							printf("%d\n", h264Len);
 							//写入文件
-							//fwrite(h264Buf, 1, h264Len, ptrHandle->hliveVideoParams.pCameraParams->fpH264);
+							fwrite(h264Buf, 1, h264Len, p->fpH264);
 							timestramp tim;
 							//ptrHandle->OnStreamReady(ptrHandle->pUserData, (void*)h264Buf, h264Len, 0);
 
@@ -949,6 +967,65 @@ int inline GetH246FromPs(char* buffer, int length, char *h264Buffer, int *h264le
 	return *h264length;
 }
 
+//呼叫保持
+unsigned __stdcall cosip::stream_keep_alive_thread(void *pCameraInfo)
+{
+	int socket_fd;
+	CameraInfo *p = (CameraInfo *)pCameraInfo;
+	int rtcp_port = p->nRecvPort + 1;
+	struct sockaddr_in servaddr;
+	//struct timeval tv;
+
+	SYSTEMTIME st;
+
+	socket_fd = init_udpsocket(rtcp_port, &servaddr, NULL);
+	if (socket_fd >= 0)
+	{
+		printf("start socket port %d success\n", rtcp_port);
+	}
+
+	char *buf = (char *)malloc(1024);
+	if (buf == NULL)
+	{
+		//APP_ERR("malloc failed buf");
+		return NULL;
+	}
+	int recvLen;
+	int addr_len = sizeof(struct sockaddr_in);
+
+	//APP_DEBUG("%s:%d starting ...", p->sipId, rtcp_port);
+
+	memset(buf, 0, 1024);
+	while (p->bRuning)
+	{
+		recvLen = recvfrom(socket_fd, buf, 1024, 0, (struct sockaddr*)&servaddr, (int*)&addr_len);
+		if (recvLen > 0)
+		{
+			printf("stream_keep_alive_thread, rtcp_port %d, recv %d bytes\n", rtcp_port, recvLen);
+			recvLen = sendto(socket_fd, buf, recvLen, 0, (struct sockaddr*)&servaddr, sizeof(struct sockaddr_in));
+			if (recvLen <= 0)
+			{
+				printf("sendto %d failed", rtcp_port);
+			}
+		}
+		else
+		{
+			perror("recvfrom() alive");
+		}
+		//gettimeofday(&tv, NULL);
+		GetLocalTime(&st);
+	}
+
+	release_udpsocket(socket_fd, NULL);
+	if (buf != NULL)
+	{
+		free(buf);
+	}
+
+	printf("%s:%d run over", p->chSipID, rtcp_port);
+
+	return NULL;
+}
 
 //接收视频流线程udp
 unsigned __stdcall cosip::rtp_recv_thread(void* pCameraInfo)
@@ -1114,7 +1191,7 @@ unsigned __stdcall cosip::rtp_recv_thread(void* pCameraInfo)
 //接收视频
 void cosip::GetH264Stream()
 {
-
+	//将视频流推送到
 }
 
 int sendPlayBye(SIPParams *p28181Params)
@@ -1182,6 +1259,12 @@ bool cosip::ReleaseService()
 	Sleep(300);
 	stopStreamRecv(&m_VideoInfo);
 	m_VideoInfo.SParams.bRunning = 0;
+	if (m_VideoInfo.pCameraParams->fpH264 != NULL)
+	{
+		fclose(m_VideoInfo.pCameraParams->fpH264);
+		m_VideoInfo.pCameraParams->fpH264 = NULL;
+	}
+	m_log->ReleaseCsrLog();
 	Sleep(1000);
 	return false;
 }

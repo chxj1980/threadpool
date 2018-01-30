@@ -128,6 +128,9 @@ namespace sip{
 		//接收视频流线程udp
 		unsigned static __stdcall rtp_recv_thread(void* pCameraInfo);
 
+		//呼叫保持
+		unsigned static __stdcall stream_keep_alive_thread(void *pCameraInfo);
+
 		//请求catalog信息
 		bool QueryCatalogInfo();
 
@@ -137,10 +140,20 @@ namespace sip{
 		//停止播放视频流
 		int stopCameraRealStream(VideoStreamParams *pVideoInfo);
 
+		//解码H264视频流 
+		/*
+			解码格式 0 - RGB32
+					 1 - RGB24
+					 2 - YUV420P
+					 3 - YUV422P
+		*/	
+		void DecodeH264(int nType = 0);
 
+	public:
 		//启动接受流视频,选择接受视频的方式0:jrtplib, 1:udp默认选用jrtplib接收视频
 		void StartPSStream(int nType = 0);
 
+	private:
 		//请求视频流
 		bool InviteRealStream(const CameraInfo & pParams);
 	public:

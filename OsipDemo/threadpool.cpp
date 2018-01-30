@@ -1,21 +1,25 @@
 #include "threadpool.h"
 #include <stdlib.h>
+#include "cosip.h"
+#include "filenameio.h"
 
-#pragma comment(lib,"pthreadVC2.lib")
+using namespace sip;
 
-void *PrintHello(void *threadid)
+//#pragma comment(lib,"pthreadVC2.lib")
+//
+//void *PrintHello(void *threadid)
+//{
+//	int tid;
+//	tid = (int)threadid;
+//	printf("Hello World!It's me,thread #%d!\n", tid);
+//	pthread_exit(NULL);
+//
+//	return NULL;
+//}
+
+int main(void)
 {
-	int tid;
-	tid = (int)threadid;
-	printf("Hello World!It's me,thread #%d!\n", tid);
-	pthread_exit(NULL);
-
-	return NULL;
-}
-
-int main(int argc, char *argv[])
-{
-	pthread_t threads[NUM_THREADS];
+	/*pthread_t threads[NUM_THREADS];
 	int rc, t;
 	for (t = 0; t < NUM_THREADS; t++)
 	{
@@ -27,5 +31,17 @@ int main(int argc, char *argv[])
 			exit(-1);
 		}
 	}
-	pthread_exit(NULL);
+	pthread_exit(NULL);*/
+	printf("thread\n");
+
+	//测试C++接口
+	//加载配置文件
+	std::string strIniFile = GetMoudlePath();
+	strIniFile += "GB28181.ini";
+	cosip soip(strIniFile);
+
+	//初始化服务 用jrtp库接收
+	soip.StartPSStream(0);
+
+	system("pause");
 }

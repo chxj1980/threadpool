@@ -1,17 +1,19 @@
-﻿生成启动时间为 2018/1/26 15:40:13。
+﻿生成启动时间为 2018/1/30 14:10:36。
      1>项目“D:\vsproj\OsipDemo\OsipDemo\OsipDemo.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /ID:\vsproj\OsipDemo\\include\osip /ID:\vsproj\OsipDemo\\include\mxml /ID:\vsproj\OsipDemo\\include\jthread /ID:\vsproj\OsipDemo\\include\jrtplib /ID:\vsproj\OsipDemo\\include /Zi /nologo /W1 /WX- /Od /D WIN32 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt threadpool.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /ID:\vsproj\OsipDemo\\include\osip /ID:\vsproj\OsipDemo\\include\mxml /ID:\vsproj\OsipDemo\\include\jthread /ID:\vsproj\OsipDemo\\include\jrtplib /ID:\vsproj\OsipDemo\\include /ID:\vsproj\OsipDemo\\include\sdl /Zi /nologo /W1 /WX- /Od /D WIN32 /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt threadpool.cpp
          threadpool.cpp
        Link:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\vsproj\OsipDemo\x64\Release\OsipDemo.exe" /NOLOGO /LIBPATH:D:\vsproj\OsipDemo\\lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\vsproj\OsipDemo\x64\Release\OsipDemo.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\vsproj\OsipDemo\x64\Release\OsipDemo.lib" /MACHINE:X64 x64\Release\cosip.obj
+         x64\Release\DecodeH264.obj
          x64\Release\filenameio.obj
+         x64\Release\H264_2_RGB.obj
          x64\Release\osipservice.obj
          x64\Release\siptest.obj
          x64\Release\threadpool.obj
-     1>LINK : fatal error LNK1104: 无法打开文件“pthreadVC2.lib”
-     1>已完成生成项目“D:\vsproj\OsipDemo\OsipDemo\OsipDemo.vcxproj”(Build 个目标)的操作 - 失败。
+         OsipDemo.vcxproj -> D:\vsproj\OsipDemo\x64\Release\OsipDemo.exe
+     1>已完成生成项目“D:\vsproj\OsipDemo\OsipDemo\OsipDemo.vcxproj”(Build 个目标)的操作。
 
-生成失败。
+生成成功。
 
-已用时间 00:00:00.44
+已用时间 00:00:02.66

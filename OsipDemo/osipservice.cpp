@@ -1316,7 +1316,7 @@ static unsigned __stdcall stream_keep_alive_thread(void *arg)
 	return NULL;
 }
 
-开始接收视频流
+//开始接收视频流
 static int startStreamRecv(liveVideoStreamParams *pliveVideoParams)
 {
 	int i;
@@ -1355,7 +1355,7 @@ static unsigned __stdcall gb28181ServerThread(void *arg)
 	struct eXosip_t *eCtx;
 	gb28181Params *p28181Params = (gb28181Params *)(arg);
 
-	初始化跟踪信息
+	//初始化跟踪信息
 	TRACE_INITIALIZE(6, NULL);
 
 	初始化eXosip和osip栈
@@ -1372,7 +1372,7 @@ static unsigned __stdcall gb28181ServerThread(void *arg)
 		printf("eXosip_init successfully!\n");
 	}
 
-	打开一个UDP socket 接收信号
+	//打开一个UDP socket 接收信号
 	iReturnCode = eXosip_listen_addr(eCtx, IPPROTO_UDP, NULL, p28181Params->localSipPort, AF_INET, 0);
 	if (iReturnCode != OSIP_SUCCESS)
 	{
@@ -1396,7 +1396,7 @@ static unsigned __stdcall gb28181ServerThread(void *arg)
 
 #if 1
 
-请求视频信息，SDP信息
+//请求视频信息，SDP信息
 static int sendInvitePlay(char *playSipId, int rtp_recv_port, gb28181Params *p28181Params)
 {
 	char dest_call[256], source_call[256], subject[128];

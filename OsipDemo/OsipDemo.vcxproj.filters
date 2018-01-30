@@ -33,6 +33,12 @@
     <ClCompile Include="threadpool.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="DecodeH264.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="H264_2_RGB.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="filenameio.h">
@@ -48,6 +54,12 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="threadpool.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="DecodeH264.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="H264_2_RGB.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
