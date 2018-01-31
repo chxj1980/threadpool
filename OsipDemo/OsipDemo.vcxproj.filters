@@ -62,5 +62,8 @@
     <ClInclude Include="H264_2_RGB.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="highlevelmath.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -126,6 +126,7 @@
     <ClInclude Include="DecodeH264.h" />
     <ClInclude Include="filenameio.h" />
     <ClInclude Include="H264_2_RGB.h" />
+    <ClInclude Include="highlevelmath.h" />
     <ClInclude Include="threadpool.h" />
     <ClInclude Include="timestramp.h" />
   </ItemGroup>
