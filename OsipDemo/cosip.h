@@ -40,6 +40,8 @@ typedef struct _CameraInfo{
 	FILE *fpH264;								//存储H264视频文件指针
 	FILE *fpLog;								//日志文件指针
 	bool bRuning;								//相机是否正在运行
+	//存储视频buffer
+	char h264buffer[PS_BUF_SIZE];
 }CameraInfo;
 
 //视频流参数
@@ -158,7 +160,7 @@ namespace sip{
 		bool InviteRealStream(const CameraInfo & pParams);
 	public:
 		//接收视频
-		void GetH264Stream();
+		void GetH264Stream(void* buf){ memcpy(buf, m_VideoInfo.pCameraParams->h264buffer, PS_BUF_SIZE); }
 	private:
 		//释放
 		bool ReleaseService();

@@ -16,6 +16,9 @@
     <Filter Include="common">
       <UniqueIdentifier>{e6608544-be03-4204-b53b-998eb1fa70d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\threadpool">
+      <UniqueIdentifier>{0e862f92-eacc-41be-a8d4-c61254ab8326}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="osipservice.cpp">
@@ -30,14 +33,26 @@
     <ClCompile Include="siptest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="threadpool.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="DecodeH264.cpp">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="H264_2_RGB.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="sdlshow.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="threadpool.cpp">
+      <Filter>common\threadpool</Filter>
+    </ClCompile>
+    <ClCompile Include="curldownload.cpp">
+      <Filter>common\threadpool</Filter>
+    </ClCompile>
+    <ClCompile Include="taskthread.cpp">
+      <Filter>common\threadpool</Filter>
+    </ClCompile>
+    <ClCompile Include="DownFileFromNet.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +68,6 @@
     <ClInclude Include="csrlog.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="threadpool.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="DecodeH264.h">
       <Filter>common</Filter>
     </ClInclude>
@@ -64,6 +76,24 @@
     </ClInclude>
     <ClInclude Include="highlevelmath.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="sdlshow.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="threadpool.h">
+      <Filter>common\threadpool</Filter>
+    </ClInclude>
+    <ClInclude Include="threadtask.h">
+      <Filter>common\threadpool</Filter>
+    </ClInclude>
+    <ClInclude Include="curldownload.h">
+      <Filter>common\threadpool</Filter>
+    </ClInclude>
+    <ClInclude Include="taskthread.h">
+      <Filter>common\threadpool</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcDef.h">
+      <Filter>common\threadpool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

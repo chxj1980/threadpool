@@ -1,5 +1,5 @@
 #ifndef __DECODE_H264_H__
-#define _DECODE_H264_H__
+#define __DECODE_H264_H__
 
 //使用ffmpeg将H264视频流解析出RGB格式并用sdl库显示
 extern "C"

@@ -96,14 +96,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\osip;$(SolutionDir)\include\mxml;$(SolutionDir)\include\jthread;$(SolutionDir)\include\jrtplib;$(SolutionDir)\include;$(SolutionDir)\include\sdl</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\code\curl-7.58.0\include\curl;$(SolutionDir)\include\osip;$(SolutionDir)\include\mxml;$(SolutionDir)\include\jthread;$(SolutionDir)\include\jrtplib;$(SolutionDir)\include;$(SolutionDir)\include\sdl</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib;E:\code\curl-7.58.0\build\Win64\VC12\DLL Release</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)\lib\*.lib;E:\code\curl-7.58.0\build\Win64\VC12\DLL Release\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,21 +114,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cosip.cpp" />
+    <ClCompile Include="curldownload.cpp" />
     <ClCompile Include="DecodeH264.cpp" />
+    <ClCompile Include="DownFileFromNet.cpp" />
     <ClCompile Include="filenameio.cpp" />
     <ClCompile Include="H264_2_RGB.cpp" />
     <ClCompile Include="osipservice.cpp" />
+    <ClCompile Include="sdlshow.cpp" />
     <ClCompile Include="siptest.cpp" />
+    <ClCompile Include="taskthread.cpp" />
     <ClCompile Include="threadpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cosip.h" />
     <ClInclude Include="csrlog.h" />
+    <ClInclude Include="curldownload.h" />
     <ClInclude Include="DecodeH264.h" />
     <ClInclude Include="filenameio.h" />
     <ClInclude Include="H264_2_RGB.h" />
     <ClInclude Include="highlevelmath.h" />
+    <ClInclude Include="ProcDef.h" />
+    <ClInclude Include="sdlshow.h" />
+    <ClInclude Include="taskthread.h" />
     <ClInclude Include="threadpool.h" />
+    <ClInclude Include="threadtask.h" />
     <ClInclude Include="timestramp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

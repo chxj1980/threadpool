@@ -133,7 +133,7 @@ int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf
 		
 
 
-		*outsize = pCodecCtx->width * 3 * pCodecCtx->height;
+		*outsize = pCodecCtx->width * 3;
 		//printf("%s\n", pFrameRGB->data[0]);
 		//*outsize = (unsigned int)pFrameRGB->linesize;
 		//*outsize = pkt.size;

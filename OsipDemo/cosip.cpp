@@ -1136,10 +1136,14 @@ unsigned __stdcall cosip::rtp_recv_thread(void* pCameraInfo)
 				if (h264length > 0)
 				{
 					//写入文件
-					fwrite(h264buf, 1, h264length, p->fpH264);
-					char chBufShow[1024 * 1024 * 4 + 10] = "";
-					sprintf(chBufShow, "ffplay %s", h264buf);
-					system(chBufShow);
+					//fwrite(h264buf, 1, h264length, p->fpH264);
+
+					//拷贝到指定内存
+					memcpy(p->h264buffer, h264buf, h264length);
+					
+					//char chBufShow[1024 * 1024 * 4 + 10] = "";
+					//sprintf(chBufShow, "ffplay %s", h264buf);
+					//system(chBufShow);
 				}
 				memcpy(psBuf, ptr, rtpPsLen);
 				psLen = 0;
@@ -1186,12 +1190,6 @@ unsigned __stdcall cosip::rtp_recv_thread(void* pCameraInfo)
 	printf("%s:%d run over", p->chSipID, p->nRecvPort);
 
 	return 0;
-}
-
-//接收视频
-void cosip::GetH264Stream()
-{
-	//将视频流推送到
 }
 
 int sendPlayBye(SIPParams *p28181Params)
