@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/3 18:35:32。
+﻿生成启动时间为 2018/2/5 15:20:25。
      1>项目“D:\vsproj\OsipDemo\OsipDemo\OsipDemo.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"E:\code\curl-7.58.0\include\curl" /ID:\vsproj\OsipDemo\\include\osip /ID:\vsproj\OsipDemo\\include\mxml /ID:\vsproj\OsipDemo\\include\jthread /ID:\vsproj\OsipDemo\\include\jrtplib /ID:\vsproj\OsipDemo\\include /ID:\vsproj\OsipDemo\\include\sdl /Zi /nologo /W1 /WX- /Od /D WIN32 /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt DownFileFromNet.cpp
@@ -20,4 +20,4 @@
 
 生成成功。
 
-已用时间 00:00:04.89
+已用时间 00:00:06.51

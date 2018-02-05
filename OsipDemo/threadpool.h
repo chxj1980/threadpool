@@ -31,7 +31,6 @@ public:
 	void Destroy();			//销毁线程池
 	void WaitTaskFinishAndDestroy();				//等在所有线程完成任务
 	void AddFreeThreadToQueue(CTaskThread *thread);	//添加空闲线程进线程池
-
 	/*
 		函数功能：执行线程
 		输出参数1：队列中剩余线程数量
@@ -55,15 +54,18 @@ private:
 		void LockTaskQueue();
 		void UnLockTaskQueue();
 
+
 		void LockFreeThreadQueue();
 		void UnLockFreeThreadQueue();
 
-		std::vector<CTaskThread*> m_arrThreads;			//	线程池容量
+		std::vector<CTaskThread*> m_arrThreads;			//	线程池***容量
 		std::queue<CTaskThread*>  m_queFreeThreads;		//	空闲线程池队列
 		pthread_mutex_t			  m_freeThreadMutex;	//	线程池互斥量
+		
 		std::queue<CThreadTask*>  m_queTask;			//  任务队列
 		pthread_mutex_t			  m_taskThreadMutex;		//  线程池互斥量
 		pthread_cond_t			  m_threadCond;			//	线程池队列信号
+		
 		pthread_t                 m_taskThread;			//	队列扫描线程，判断线程池是否有未完成任务
 };
 

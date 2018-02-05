@@ -31,23 +31,26 @@ using namespace std;
 #endif
 
 
+//线程池构造函数
 CThreadPool::CThreadPool(size_t maxthreadnum)
 {
-	MaxThreadNum = maxthreadnum;
-	bDestroy = false;
-	bWaitDestroy = false;
-	m_taskThreadMutex = NULL;
-	m_freeThreadMutex = NULL;
-	WatiTime = 500;
-	pthread_mutex_init(&m_taskThreadMutex, NULL);
-	pthread_cond_init(&m_threadCond, NULL);
-	pthread_mutex_init(&m_freeThreadMutex, NULL);
+	MaxThreadNum = maxthreadnum;		//	最大线程个数
+	bDestroy = false;					//	是否销毁线程池
+	bWaitDestroy = false;               //	是否等待销毁
+	m_taskThreadMutex = NULL;			//	任务线程锁，每插入一个任务是需要锁定任务队列
+	m_freeThreadMutex = NULL;           //  空闲线程锁，每启动一个线程执行任务是需要锁定线程队列
+	WatiTime = 500;						//	等待时间
+	pthread_mutex_init(&m_taskThreadMutex, NULL);	//	初始化任务队列锁
+	pthread_cond_init(&m_threadCond, NULL);			//	初始化条件变量
+	pthread_mutex_init(&m_freeThreadMutex, NULL);	//	初始化线程队列锁
 }
 
 //销毁类对象及成员
 CThreadPool::~CThreadPool()
 {
 	cout << "线程池析构函数" << endl;
+
+	//分别释放线程队列锁，条件对象还有任务队列锁
 	pthread_mutex_destroy(&m_taskThreadMutex);
 	pthread_cond_destroy(&m_threadCond);
 	pthread_mutex_destroy(&m_freeThreadMutex);
@@ -56,13 +59,12 @@ CThreadPool::~CThreadPool()
 //添加任务
 void CThreadPool::AddAsynTask(TaskFunc taskfunc, void* pParams)
 {
+	//声明并初始化一个线程任务
 	CThreadTask *task = new CThreadTask(taskfunc, pParams);
-	LockTaskQueue();
-
-	//添加任务到队列
-	m_queTask.push(task);
-	SignalTaskQueue();
-	UnLockTaskQueue();
+	LockTaskQueue();			//	锁住任务队列
+	m_queTask.push(task);		//	添加任务到队列
+	SignalTaskQueue();			//	通知任务执行
+	UnLockTaskQueue();			//	解出锁定
 }
 
 //激活线程池
@@ -82,8 +84,9 @@ void CThreadPool::Activate()
 //销毁线程池
 void CThreadPool::Destroy()
 {
-	cout << "Destory begin" << endl;
+	cout << "Destroy begin" << endl;
 	bDestroy = true;
+	SignalTaskQueue();	//通知线程退出等待；
 	
 	//停止扫描线程
 	pthread_join(m_taskThread, NULL);
@@ -171,12 +174,15 @@ void* CThreadPool::ScanTask(void* pParams)
 		if (pool->bDestroy)
 			break;
 		pool->Start(&queNum, &freeQueNum);
+
+		//如果处于销毁状态或者线程设置数为零就直接跳出
 		if (pool->bWaitDestroy && !queNum && freeQueNum == pool->GetMaxThreadNum())
 		{
 			pool->bDestroy = true;
 			break;
 		}
-
+		
+		//如果任务数为零则退出
 		if (queNum)
 		{
 			if (freeQueNum)
@@ -187,9 +193,12 @@ void* CThreadPool::ScanTask(void* pParams)
 		else//进入任务队列
 		{	
 			pool->LockTaskQueue();
+			cout << pool->GetQueueTaskCount() << endl;
 			if (!pool->GetQueueTaskCount())
 			{
+				cout << "进入等待" << endl;
 				pool->WaitQueueTaskDignal();
+				cout << "跳出等待" << endl;
 			}
 			pool->UnLockTaskQueue();
 		}
@@ -209,7 +218,7 @@ void CThreadPool::WaitQueueTaskDignal()
 
 /*
 函数功能：执行线程
-输出参数1：队列中剩余线程数量
+输出参数1：队列中剩余任务数量
 输出参数2：队列中剩余空闲线程数量
 */
 void CThreadPool::Start(size_t *queue_remain_num, size_t *free_thread_num)
@@ -219,7 +228,7 @@ void CThreadPool::Start(size_t *queue_remain_num, size_t *free_thread_num)
 	if (!m_queFreeThreads.empty())
 	{
 		LockTaskQueue();
-		if (m_queTask.empty())
+		if (!m_queTask.empty())
 		{
 			CThreadTask* task = m_queTask.front();
 			m_queTask.pop();
@@ -244,4 +253,5 @@ void CThreadPool::Start(size_t *queue_remain_num, size_t *free_thread_num)
 		*free_thread_num = 0;
 	}
 	UnLockFreeThreadQueue();
+	cout << "任务执行完毕" << endl;
 }
