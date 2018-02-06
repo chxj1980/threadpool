@@ -1,5 +1,12 @@
 #include "H264_2_RGB.h"
 
+extern "C"
+{
+	#include "sdl/SDL.h"
+}
+#pragma comment(lib, "sdl/sdl.lib")
+#pragma comment(lib, "sdl/sdlmain.lib")
+
 #pragma comment(lib,"avutil.lib")
 #pragma comment(lib,"avformat.lib")
 #pragma comment(lib,"avcodec.lib")
@@ -43,6 +50,11 @@ int H264_Init(void)
 
 	return 0;
 }
+
+int g_init = 0;
+
+SDL_Surface *screen;
+SDL_Surface *image;
 
 //×ªÂëº¯Êý
 int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf, unsigned int*outsize, int *nWidth, int *nHeight)
@@ -91,7 +103,7 @@ int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf
 
 	if (avcodec_open2(pCodecCtx, pCodec, NULL)<0)
 		return -1; 
-
+	
 	if (nGetPic)
 	{
 		//if (pFrameRGB == NULL)
@@ -100,6 +112,44 @@ int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf
 		int bytes = avpicture_get_size(AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height);
 		buffer_rgb = (uint8_t *)av_malloc(bytes);
 		avpicture_fill((AVPicture *)pFrameRGB, buffer_rgb, AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height);
+
+		if (g_init == 0)
+		{
+			if (SDL_Init(SDL_INIT_VIDEO) < 0)
+			{
+				fprintf(stderr, "can not initialize SDL:%s\n", SDL_GetError());
+				return -1;
+			}
+
+			atexit(SDL_Quit);
+			screen = SDL_SetVideoMode(pCodecCtx->width, pCodecCtx->height, 24, SDL_SWSURFACE | SDL_ANYFORMAT);
+			if (screen == NULL)
+			{
+				exit(2);
+			}
+
+			Uint32 rmask, gmask, bmask, amask;
+#if 0//SDL_BYTEORDER == SDL_BIG_ENDIAN
+			rmask = 0xff000000;
+			gmask = 0x00ff0000;
+			bmask = 0x0000ff00;
+			amask = 0x000000ff;
+#else
+			rmask = 0x000000ff;
+			gmask = 0x0000ff00;
+			bmask = 0x00ff0000;
+			amask = 0xff000000;
+#endif
+			image = SDL_CreateRGBSurface(SDL_SWSURFACE, pCodecCtx->width, pCodecCtx->height, 0,
+				rmask, gmask, bmask, NULL);
+			if (image == NULL)
+			{
+				//fprintf(stderr, "CreateRGBSurface failed: %s\n", SDL_GetError());
+				exit(1);
+			}
+			g_init = 1;
+		}
+
 		//}
 		// Determine required buffer size and allocate buffer  
 		//numBytes = avpicture_get_size(AV_PIX_FMT_BGR24, pCodecCtx->width, pCodecCtx->height);
@@ -133,7 +183,7 @@ int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf
 		
 
 
-		*outsize = pCodecCtx->width * 3;
+		*outsize = pCodecCtx->width * 3 * pCodecCtx->height;
 		//printf("%s\n", pFrameRGB->data[0]);
 		//*outsize = (unsigned int)pFrameRGB->linesize;
 		//*outsize = pkt.size;
@@ -141,10 +191,15 @@ int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf
 		//fprintf(g_fp, "%s\n", pFrameRGB->data[0]);
 		//if (fw != NULL)
 		//	fwrite(pFrameRGB->data, 1, *outsize, fw);
-		memcpy(outputbuf, buffer_rgb, *outsize);
+		memcpy(screen->pixels, buffer_rgb, *outsize);
 		
 		*nWidth = pCodecCtx->width;
 		*nHeight = pCodecCtx->height;
+
+		SDL_UpdateRect(screen, 0, 0, image->w, image->h);
+
+		/* Free the allocated BMP surface */
+		//SDL_FreeSurface(image);
 
 		sws_freeContext(img_convert_ctx);
 		//free(buffer_rgb);

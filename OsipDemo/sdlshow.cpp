@@ -11,7 +11,7 @@ sdlshow::sdlshow()
 //初始化sdl
 int InitSdl()
 {
-#if 0
+#if 1
 	//初始化sdl库
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{

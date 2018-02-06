@@ -62,10 +62,13 @@ int main(void)
 #endif
 
 	//启动任务去下载东西
-	const char* capsuleTensor = "https://codeload.github.com/naturomics/CapsNet-Tensorflow/zip/master";
-	pool->AddAsynTask(&RunTaskFunc, (void*)capsuleTensor);
-	const char* capsuleKeras = "https://codeload.github.com/XifengGuo/CapsNet-Keras/zip/master";
-	pool->AddAsynTask(&RunTaskFunc, (void*)capsuleKeras);
+	//const char* capsuleTensor = "https://codeload.github.com/naturomics/CapsNet-Tensorflow/zip/master";
+	//pool->AddAsynTask(&RunTaskFunc, (void*)capsuleTensor);
+	//const char* capsuleKeras = "https://codeload.github.com/XifengGuo/CapsNet-Keras/zip/master";
+	//pool->AddAsynTask(&RunTaskFunc, (void*)capsuleKeras);
+
+	//用sdl显示图片
+
 
 	getchar();
 
