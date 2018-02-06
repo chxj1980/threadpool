@@ -3,7 +3,7 @@
 
 
 //调用sdl库直接将RGB视频流显示
-#pragma comment(lib, "SDL2.lib")
+//#pragma comment(lib, "SDL2.lib")
 
 //解码库
 #pragma comment(lib, "swscale.lib")

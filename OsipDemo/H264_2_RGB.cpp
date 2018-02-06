@@ -4,13 +4,6 @@ extern "C"
 {
 	#include "sdl/SDL.h"
 }
-#pragma comment(lib, "sdl/sdl.lib")
-#pragma comment(lib, "sdl/sdlmain.lib")
-
-#pragma comment(lib,"avutil.lib")
-#pragma comment(lib,"avformat.lib")
-#pragma comment(lib,"avcodec.lib")
-#pragma comment(lib,"swscale.lib")
 
 extern FILE* g_fp;
 

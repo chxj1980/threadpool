@@ -30,7 +30,7 @@
 #if defined(__GNUC__) || defined(__DMC__)
 #define HAVE_STDINT_H	1
 #elif defined(_MSC_VER)
-//typedef signed __int8		int8_t;
+typedef signed __int8		int8_t;
 typedef unsigned __int8		uint8_t;
 typedef signed __int16		int16_t;
 typedef unsigned __int16	uint16_t;

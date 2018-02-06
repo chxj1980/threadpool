@@ -7,10 +7,6 @@ extern "C"
 	#include <sdl/SDL_thread.h>
 }
 
-#pragma comment(lib, "sdl.lib")
-#pragma comment(lib, "SDLmain.lib")
-#pragma comment(lib, "SDLtest.lib")
-
 namespace nsdl
 {
 	class sdlshow
